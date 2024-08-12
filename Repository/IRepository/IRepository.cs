@@ -1,4 +1,6 @@
-﻿namespace ETickets.Repository.IRepository
+﻿using System.Linq.Expressions;
+
+namespace ETickets.Repository.IRepository
 {
     public interface IRepository<T> where T : class
     {
@@ -6,7 +8,7 @@
         void Edit(T entity);
         void Delete(T entity);
         IEnumerable<T> GetAll();
-        T? GetOne(int id);
+        IEnumerable<T> Get(Expression<Func<T,bool>> expression , string includeproperty = null);
         void Commit();
     }
 }

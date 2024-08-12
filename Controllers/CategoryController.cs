@@ -36,7 +36,7 @@ namespace ETickets.Controllers
         }
         public IActionResult Edit(int id)
         {
-            var result = categoryRepository.GetOne(id);
+            var result = categoryRepository.Get(x=>x.Id == id).FirstOrDefault();
             return result != null ? View(result) : RedirectToAction("NotFound","Home");
         }
         [HttpPost]
@@ -49,7 +49,7 @@ namespace ETickets.Controllers
         }
         public IActionResult Delete(int id)
         {
-            var result = categoryRepository.GetOne(id);
+            var result = categoryRepository.Get(x=>x.Id == id).FirstOrDefault();
             categoryRepository.Delete(result);
             categoryRepository.Commit();
             return RedirectToAction("Index");

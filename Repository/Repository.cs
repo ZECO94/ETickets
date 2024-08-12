@@ -1,6 +1,7 @@
 ﻿using ETickets.Data;
 using ETickets.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ETickets.Repository
 {
@@ -42,9 +43,12 @@ namespace ETickets.Repository
             return dbSet.ToList();
         }
 
-        public T? GetOne(int id)
+        public IEnumerable<T> Get(Expression<Func<T , bool>> expression , string includeproperty = null)
         {
-            return dbSet.Find(id);
+            if(includeproperty != null)
+                return dbSet.Include(includeproperty).Where(expression);
+            else
+                return dbSet.Where(expression);
         }
     }
 }
