@@ -38,17 +38,29 @@ namespace ETickets.Repository
             Commit();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includeProperties)
         {
-            return dbSet.ToList();
+            IQueryable<T> query = dbSet;
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.ToList();
         }
 
-        public IEnumerable<T> Get(Expression<Func<T , bool>> expression , string includeproperty = null)
+
+        public IEnumerable<T> Get(Expression<Func<T, bool>> expression, params
+            Expression<Func<T, object>>[] properties)
         {
-            if(includeproperty != null)
-                return dbSet.Include(includeproperty).Where(expression);
-            else
-                return dbSet.Where(expression);
+            IQueryable<T> value = dbSet;
+            foreach (var property in properties)
+            {
+                value = value.Include(property);
+            }
+            value = value.Where(expression);
+            return value;
         }
     }
 }

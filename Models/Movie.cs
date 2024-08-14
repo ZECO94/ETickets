@@ -14,6 +14,7 @@
         public int CinemaId { get; set; }
         public int CategoryId { get; set; }
         
+        
         public Cinema Cinema { get; set; }
         public Category Category { get; set; }
         public List<Actor> Actors { get; set; }

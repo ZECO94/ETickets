@@ -7,8 +7,9 @@ namespace ETickets.Repository.IRepository
         void Create(T entity);
         void Edit(T entity);
         void Delete(T entity);
-        IEnumerable<T> GetAll();
-        IEnumerable<T> Get(Expression<Func<T,bool>> expression , string includeproperty = null);
+        IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includeProperties);
+        IEnumerable<T> Get(Expression<Func<T, bool>> expression, params
+            Expression<Func<T , object>>[] properties);
         void Commit();
     }
 }
