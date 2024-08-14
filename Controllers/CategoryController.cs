@@ -8,9 +8,12 @@ namespace ETickets.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepository)
+        private readonly IMovieRepository movieRepository;
+        public CategoryController(ICategoryRepository categoryRepository,
+            IMovieRepository movieRepository)
         {
             this.categoryRepository = categoryRepository;
+            this.movieRepository = movieRepository;
         }
        public IActionResult Index()
        {
@@ -50,9 +53,21 @@ namespace ETickets.Controllers
         public IActionResult Delete(int id)
         {
             var result = categoryRepository.Get(x=>x.Id == id).FirstOrDefault();
-            categoryRepository.Delete(result);
-            categoryRepository.Commit();
-            return RedirectToAction("Index");
+            if (result != null)
+            {
+                categoryRepository.Delete(result);
+                categoryRepository.Commit();
+                return RedirectToAction("Index");
+            } else
+            {
+                return RedirectToAction("NotFound","Home");
+            }
+        }
+        public IActionResult AllMovies(int id)
+        {
+            var result = movieRepository.Get(x => x.CategoryId == id, x => x.Category
+            ,x=>x.Cinema);
+            return View(result);
         }
 
     }

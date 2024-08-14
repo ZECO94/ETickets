@@ -7,9 +7,9 @@
 <h1>Cinemas</h1>
 <hr />
 
-@* <p>
+<p>
     <a asp-action="Create" type="button" class="btn btn-outline-primary">Create New</a>
-</p> *@
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -33,15 +33,15 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-action="" asp-route-id="" type="button" class="btn btn-primary">All Movies</a>
-                    @* <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-warning">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" type="button" class="btn btn-danger">Delete</a> *@
+                    <a asp-action="AllMovies" asp-route-id="@item.Id" type="button" class="btn btn-primary">All Movies</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-warning">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" type="button" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@* <!-- Delete Confirmation Modal -->
+<!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -86,6 +86,6 @@
         });
     </script>
 
-} *@
+}
 
 
