@@ -1,6 +1,7 @@
 ﻿using ETickets.Models;
 using ETickets.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ETickets.Controllers
 {
@@ -49,6 +50,16 @@ namespace ETickets.Controllers
                 return RedirectToAction("NotFound","Home");
             }
         }
-        
+        public IActionResult Search(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var movies = movieRepository.Get(m => m.Name.Contains(query)).FirstOrDefault();
+            return View(movies);
+        }
+
+
     }
 }

@@ -1,4 +1,6 @@
 using ETickets.Models;
+using ETickets.Repository;
+using ETickets.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -11,6 +13,7 @@ namespace ETickets.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            
         }
 
         public IActionResult Index()
@@ -21,6 +24,7 @@ namespace ETickets.Controllers
         {
             return View(); 
         }
+        
 
         public IActionResult Privacy()
         {
