@@ -1,4 +1,4 @@
-﻿using ETickets.Models;
+﻿ using ETickets.Models;
 using ETickets.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +11,14 @@ namespace ETickets.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly RoleManager<IdentityRole> roleManager;
+        public AccountController(UserManager<ApplicationUser> userManager
+            , SignInManager<ApplicationUser> signInManager
+            , RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
         public IActionResult Register()
         {
@@ -75,6 +79,23 @@ namespace ETickets.Controllers
         {
             signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        public IActionResult CreateRole()
+        {
+            return View(); 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateRole(RoleVM roleVM)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityRole user = new(roleVM.Name);
+                await roleManager.CreateAsync(user);
+                return RedirectToAction("CreateRole");
+            }
+            return View(roleVM); 
+            
         }
     }   
 }

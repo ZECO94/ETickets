@@ -19,5 +19,6 @@ namespace ETickets.Data
         public DbSet<ActorMovies> ActorMovies { get; set; }
         public DbSet<ApplicationUserVM> ApplicationUserVM { get; set; } = default!;
         public DbSet<ETickets.Models.ViewModel.LoginVM> LoginVM { get; set; } = default!;
+        public DbSet<ETickets.Models.ViewModel.RoleVM> RoleVM { get; set; } = default!;
     }
 }
