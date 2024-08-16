@@ -1,4 +1,5 @@
 ﻿using ETickets.Models;
+using System.Linq.Expressions;
 
 namespace ETickets.Repository.IRepository
 {

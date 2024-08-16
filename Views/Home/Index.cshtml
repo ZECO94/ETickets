@@ -8,9 +8,12 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>You can enjoy with our Large Movies Library</p>
-    <div class="d-grid gap-2">
-        <a asp-controller="Movie" asp-action="Index" class="btn btn-lg btn-primary">To Movies</a>
-    </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="d-grid gap-2">
+            <a asp-controller="Movie" asp-action="Index" class="btn btn-lg btn-primary">To Movies</a>
+        </div>
+    }
     <br />
     <div class="image">
         <<img src="~/imgs/movies.jpg" asp-append-version="true">

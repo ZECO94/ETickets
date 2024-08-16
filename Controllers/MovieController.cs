@@ -1,4 +1,5 @@
 ﻿using ETickets.Models;
+using ETickets.Repository;
 using ETickets.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,11 @@ namespace ETickets.Controllers
             var result = movieRepository.GetAll(x=>x.Category , x=>x.Cinema);
             return View(result);
         }
-        public IActionResult Details(int id)
-        {
-            var result1 = movieRepository.Get(x => x.Id == id).FirstOrDefault();
-            return result1 != null ? View(result1) : RedirectToAction("NotFound", "Home");
-        }
+        //public IActionResult Details(int id)
+        //{
+        //    var result1 = movieRepository.Get(x => x.Id == id).FirstOrDefault();
+        //    return result1 != null ? View(result1) : RedirectToAction("NotFound", "Home");
+        //}
         public IActionResult Edit(int id)
         {
             var result2 = movieRepository.Get(x=>x.Id == id);
@@ -50,14 +51,16 @@ namespace ETickets.Controllers
                 return RedirectToAction("NotFound","Home");
             }
         }
-        public IActionResult Search(string query)
+        public IActionResult Search(string name)
         {
-            if (string.IsNullOrEmpty(query))
+            if (string.IsNullOrEmpty(name))
             {
-                return RedirectToAction("Index", "Home");
+                return View("Search", new List<Movie>());
             }
-            var movies = movieRepository.Get(m => m.Name.Contains(query)).FirstOrDefault();
-            return View(movies);
+
+            var movies = movieRepository.Get(x => x.Name == name);                 
+
+            return View("Search", movies);
         }
 
 
