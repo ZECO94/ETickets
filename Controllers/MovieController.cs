@@ -51,16 +51,11 @@ namespace ETickets.Controllers
                 return RedirectToAction("NotFound","Home");
             }
         }
-        public IActionResult Search(string name)
+        
+        public IActionResult Search(string query)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return View("Search", new List<Movie>());
-            }
-
-            var movies = movieRepository.Get(x => x.Name == name);                 
-
-            return View("Search", movies);
+            var movie =movieRepository.Get(x=>x.Name == query ,x => x.Category, x => x.Cinema);
+            return View("Index" , movie);
         }
 
 
