@@ -17,7 +17,7 @@
          </ul>
         <div class="card-body">
                 <a href="/Movie/Details/id=@item.Id" class="btn btn-info">More Details</a>
-                <a href="#" type="button" class="btn btn-outline-light">Book Tickets</a>
+                <a asp-action="Index" asp-controller="Cart" asp-route-id ="@item.Id" type="button" class="btn btn-outline-light">Book Tickets</a>
         </div>
     </div>
 }

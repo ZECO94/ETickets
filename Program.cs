@@ -4,6 +4,7 @@ using ETickets.Repository;
 using ETickets.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 using System.Data.Common;
 
 namespace ETickets
@@ -16,6 +17,8 @@ namespace ETickets
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             //Identity Service
             builder.Services.AddIdentity<ApplicationUser,IdentityRole>().
             AddEntityFrameworkStores<ApplicationDbContext>();
@@ -29,6 +32,7 @@ namespace ETickets
             builder.Services.AddScoped<IMovieRepository,MovieRepository>();
             builder.Services.AddScoped<ICinemaRepository,CinemaRepository>();
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+            builder.Services.AddScoped<ICartRepository , CartRepository>();
 
 
 
