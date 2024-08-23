@@ -3,6 +3,7 @@ using ETickets.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ETickets.Controllers
@@ -22,6 +23,12 @@ namespace ETickets.Controllers
         }
         public IActionResult Register()
         {
+            if(User.IsInRole("Admin"))
+            {
+                var result = roleManager.Roles.Select(x=>new SelectListItem
+                { Value=x.Name,Text=x.Name});
+                ViewBag.roles = result;
+            }
             return View();
         }
         [HttpPost]
@@ -36,8 +43,18 @@ namespace ETickets.Controllers
                     Email = userVM.Email,
                     Address = userVM.Address
                 };
-                await userManager.CreateAsync(user,userVM.Password);
-                return RedirectToAction("Index", "Home");
+                var result = await userManager.CreateAsync(user,userVM.Password);
+                if (result.Succeeded)
+                {
+                    if (User.IsInRole("Admin"))
+                        await userManager.AddToRoleAsync(user, userVM.Role);
+                    else
+                        await userManager.AddToRoleAsync(user, "User");
+
+                    await signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("Password", "Don't Match Roles");
             }
             return View(userVM);
         }
@@ -96,6 +113,10 @@ namespace ETickets.Controllers
             }
             return View(roleVM); 
             
+        }
+        public IActionResult AccessDenied()
+        {
+            return RedirectToAction("Index" , "Home");
         }
     }   
 }

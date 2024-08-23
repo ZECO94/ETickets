@@ -13,11 +13,31 @@
                 <li class="list-group-item"><srtong>Start at: </srtong>@item.StartDate</li>
                 <li class="list-group-item"><srtong>End at: </srtong>@item.EndDate</li>
                 <li class="list-group-item"><srtong>Category: </srtong>@item.Category.Name</li>
-                 <li class="btn btn-primary">@item.Status</li>
+                @if(item.Status == MovieStatus.Avaliable)
+                {
+                    <li class="btn btn-success">@item.Status</li>
+                }
+                else if (item.Status == MovieStatus.upcoming)
+                {
+                    <li class="btn btn-light">@item.Status</li>
+                }
+                else if (item.Status == MovieStatus.Expired)
+                {
+                    <li class="btn btn-danger">@item.Status</li>
+                }
          </ul>
+
         <div class="card-body">
-                <a href="/Movie/Details/id=@item.Id" class="btn btn-info">More Details</a>
-                <a asp-action="Index" asp-controller="Cart" asp-route-id ="@item.Id" type="button" class="btn btn-outline-light">Book Tickets</a>
+                <a asp-action="Details" asp-controller="Movie" asp-route-id="@item.Id" class="btn btn-info">More Details</a>
+
+                @if (item.Status == MovieStatus.Expired)
+                {
+                    <a asp-action="Index" asp-controller="Cart" asp-route-id ="@item.Id" type="button" class="btn btn-outline-light disabled">Book Tickets</a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-controller="Cart" asp-route-id="@item.Id" type="button" class="btn btn-outline-light">Book Tickets</a>
+                }
         </div>
     </div>
 }

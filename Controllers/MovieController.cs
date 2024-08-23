@@ -1,11 +1,14 @@
 ﻿using ETickets.Models;
 using ETickets.Repository;
 using ETickets.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ETickets.Controllers
 {
+    [Authorize(Roles ="Admin")]
+    
     public class MovieController : Controller
     {
         private readonly IMovieRepository movieRepository;
@@ -14,14 +17,17 @@ namespace ETickets.Controllers
         {
             this.movieRepository = movieRepository;
         }
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var result = movieRepository.GetAll(x=>x.Category , x=>x.Cinema);
             return View(result);
         }
-        //public IActionResult Details(int id)
+        [AllowAnonymous]
+        //public IActionResult Details(int id)//DATABASE ISSUE TO BE CHECKED
         //{
-        //    var result1 = movieRepository.Get(x => x.Id == id).FirstOrDefault();
+        //    var result1 = movieRepository.Get(x => x.Id == id, x => x.Category,
+        //        x => x.Cinema, x => x.Actors).FirstOrDefault();
         //    return result1 != null ? View(result1) : RedirectToAction("NotFound", "Home");
         //}
         public IActionResult Edit(int id)
@@ -51,7 +57,7 @@ namespace ETickets.Controllers
                 return RedirectToAction("NotFound","Home");
             }
         }
-        
+        [AllowAnonymous]
         public IActionResult Search(string query)
         {
             var movie =movieRepository.Get(x=>x.Name == query ,x => x.Category, x => x.Cinema);

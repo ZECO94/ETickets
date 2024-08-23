@@ -9,10 +9,12 @@
 
 <h1>Categories</h1>
 <hr />
-
-<p>
-    <a asp-action="Create" type="button" class="btn btn-outline-primary">Create New</a>
-</p>
+@if (!User.IsInRole("User"))
+{
+    <p>
+        <a asp-action="Create" type="button" class="btn btn-outline-primary">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -34,11 +36,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
+                @if (User.IsInRole("User"))
+                {
             <td>
+                     
+                  <a asp-action="AllMovies" asp-route-id="@item.Id" type="button" class="btn btn-primary">All Movies</a>
+                  
+            </td>
+                }
+                else{
+                <td>
+
                     <a asp-action="AllMovies" asp-route-id="@item.Id" type="button" class="btn btn-primary">All Movies</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id" type="button" class="btn btn-warning">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id" type="button" class="btn btn-danger">Delete</a>
-            </td>
+                </td>
+                }
         </tr>
 }
     </tbody>

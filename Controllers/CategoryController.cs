@@ -1,10 +1,12 @@
 ﻿using ETickets.Models;
 using ETickets.Repository;
 using ETickets.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETickets.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository categoryRepository;
@@ -15,11 +17,13 @@ namespace ETickets.Controllers
             this.categoryRepository = categoryRepository;
             this.movieRepository = movieRepository;
         }
+        [AllowAnonymous]
        public IActionResult Index()
        {
             var result = categoryRepository.GetAll();
             return View(result);
        }
+        
         public IActionResult Create()
         {
 
@@ -63,6 +67,7 @@ namespace ETickets.Controllers
                 return RedirectToAction("NotFound","Home");
             }
         }
+        [AllowAnonymous]
         public IActionResult AllMovies(int id)
         {
             var result = movieRepository.Get(x => x.CategoryId == id, x => x.Category

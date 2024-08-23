@@ -1,11 +1,13 @@
 ﻿using ETickets.Models;
 using ETickets.Repository;
 using ETickets.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace ETickets.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CinemaController : Controller
     {
         private readonly ICinemaRepository cinemaRepository;
@@ -16,12 +18,13 @@ namespace ETickets.Controllers
             this.cinemaRepository = cinemaRepository;
             this.movieRepository = movieRepository;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var result = cinemaRepository.GetAll();
             return View(result);
         }
+        [AllowAnonymous]
         public IActionResult AllMovies(int id)
         {
             var result = movieRepository.Get(x => x.CinemaId == id, x => x.Category
